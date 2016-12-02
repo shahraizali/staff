@@ -1,69 +1,43 @@
-<?php session_start();?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Blog Home - Start Bootstrap Template</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/blog-home.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+<?php 
+    include_once("header.php");
+?>
 
     <div class="container">
         <?php include_once("connection.php");?>
         <form name="submit" method="post" >
+           
+            
+            <!-- selecting  semester -->
+            
+      <?php 
+         
+            
+            if(isset($_SESSION['sub_name']) && isset($_SESSION['sec']) && isset($_SESSION['sem'])){
+                
+                 echo "<br><br>Select Subjects";
+                     
+                    echo "<select class='form-control' name='subjects'>";
+                    //SELECT sub_id FROM `sec_subs` WHERE sem_id = 5 and sec_id =  2
+                                $q = "select sub_id from sec_subs where sem_id = '".$_SESSION["sem"]."' and sec_id ='".getSectionNum($_SESSION["sec"])[0]."'" ;
+                            $r =     mysql_query($q);
+                                    while( $sub =  mysql_fetch_array($r)){
+                                        $selected="";
+                                          if(isset($_POST['sub'])  ){
+                                              if( $_POST["subjects"] == getSubName($sub[0])[1]){
+                                                  $selected = "selected";
+                                                }
+                                          }  
+                                        echo "<option ".$selected.">".getSubName($sub[0])[1]. "</option>";
+                                    }
+                                echo $q;
+                    echo "</select>";
+                    echo '<br>
+                     <button class="btn btn-success" type="submit" name = "sub">Selected</button>';
+                
+            }
+            
+             if(!isset($_SESSION['sub_name']) && !isset($_SESSION['sec']) ){
+            ?>      
             
          Select Semester
             <select  class="form-control" name="sem_selected">
@@ -71,8 +45,17 @@
                     $query =  "Select sem_no from semesters;";
                     $result =  mysql_query($query);
                     echo "";
+                  
                     while( $sem =  mysql_fetch_array($result)){
-                        echo " <option>".$sem[0]."</option>";
+                            $selected =""; 
+                         if(isset($_POST['sem_sub']) || isset($_POST['section'])  || isset($_POST['sub']) ){
+                                if( $_POST["sem_selected"] == $sem[0]){
+                                    $selected = "selected";
+                                }
+                       
+                       
+                        }
+                        echo " <option ".$selected .">".$sem[0]."</option>";
 
                     }
                     ?>
@@ -80,9 +63,15 @@
             <br>
             <button class="btn btn-success" name="sem_sub" type="submit">Selected</button>
             <br><br>
+            
+            
+            <!-- selecting sections -->
+             
+            
+            
             <?php
                 
-                if(isset($_POST["sem_sub"])){
+                if(isset($_POST["sem_sub"]) ||isset($_POST['section']) || isset($_POST['sub']) ){
                    echo "Select Section";
                     $sem_id = $_POST["sem_selected"];
                     $_SESSION["sem"] =  $sem_id;
@@ -90,22 +79,86 @@
                     $result =  mysql_query($query);
                     echo "<select name ='sec' class='form-control'>";
                     while($row  =  mysql_fetch_array($result)){
-                        $newQ =  "select name from sections where id = '".$row[0]."'";
-                        $r = mysql_query($newQ);
-                        $name =  mysql_fetch_array($r);
-                        echo "<option>". $name[0]."</option>";
+                        $name = getSectionName($row[0]);
+                         $selected =""; 
+                         if(isset($_POST['section']) || isset($_POST['sub'])  ){
+                                if( $_POST["sec"] == $name[0]){
+                                    $selected = "selected";
+                                }
+                         }
+                        echo "<option ".$selected.">". $name[0]."</option>";
                     }
                     echo "</select>";
                      echo '<br>
                      <button class="btn btn-success" type="submit" name = "section">Selected</button>';    
                 }
+            
+             
+            //selecting subjects
+            
+            
                
-                if(isset($_POST['section'])){
+                if(isset($_POST['section']) || isset($_POST['sub'])){
                     $_SESSION["sec"] =  $_POST['sec'];
+                       
+                    echo "<br><br>Select Subjects";
                      
-                   
-                    header("Location: new.php");
+                    echo "<select class='form-control' name='subjects'>";
+                    //SELECT sub_id FROM `sec_subs` WHERE sem_id = 5 and sec_id =  2
+                                $q = "select sub_id from sec_subs where sem_id = '".$_SESSION["sem"]."' and sec_id ='".getSectionNum($_SESSION["sec"])[0]."'" ;
+                            $r =     mysql_query($q);
+                                    while( $sub =  mysql_fetch_array($r)){
+                                        $selected="";
+                                          if(isset($_POST['sub'])  ){
+                                              if( $_POST["subjects"] == getSubName($sub[0])[1]){
+                                                  $selected = "selected";
+                                                }
+                                          }  
+                                        echo "<option ".$selected.">".getSubName($sub[0])[1]. "</option>";
+                                    }
+                                echo $q;
+                    echo "</select>";
+                    echo '<br>
+                     <button class="btn btn-success" type="submit" name = "sub">Selected</button>';
                 }
+                 
+             }else{
+                 echo "&nbsp;<button type='submit' name='unset' class='btn'>Change section/semester</button><br>";
+                
+                if(isset($_POST['unset'])){
+                    unset($_SESSION['sub_name']);
+                    unset($_SESSION['sec']);
+                    unset($_SESSION['sem']);
+                    header("Location: #");
+                }
+             }
+            
+            if(isset($_POST['sub'])){
+
+                $_SESSION['sub_name'] = $_POST['subjects'];
+               // echo $_SESSION['sub_name'];
+            header("Location: Questions.php");
+            }
+            // selecting teacher
+
+            /*     //NO Need to select teacher as we have cornered it  
+                if(isset($_POST['sub'])){
+                    
+                    $SESSION['sub_name'] = $_POST['subjects'];
+                    echo "<br><br>Select Your Teacher : ";
+                     echo "<select class='form-control' name='subjects'>";
+                         $q = "select staff_id from sec_subs where sem_id = '".$_SESSION["sem"]."' and sec_id ='".getSectionNum($_SESSION["sec"])[0]."' and sub_id = '".getSubId($SESSION['sub_name'])[0]."' " ;
+                            $r =     mysql_query($q);
+                                    while( $sub =  mysql_fetch_array($r)){
+                                        echo "<option>".getStaffName($sub[0])[0]. "</option>";
+                                    }
+                                echo $q;
+                    
+                    echo "</select>";
+                    echo '<br>
+                     <button class="btn btn-success" type="submit" name = "teacher">Selected</button>';
+                }
+                */
             
             ?>
             
