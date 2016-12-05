@@ -4,6 +4,14 @@
     }
     include_once("helper.php");
     include_once("connection.php");
+
+   // getting requitred data from students table 
+                            $q = "select std_id , std_name , sem_no, sec_no , dep_id  from students where email = '".$_SESSION['email']."' ;";
+                            $res =  mysql_query($q);
+                            $data = mysql_fetch_assoc($res);
+                                  
+            
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +70,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.php"><span class="glyphicon glyphicon-user"></span><?= $_SESSION['email']?></a></li>
+                    <li><a href="index.php"><span class="glyphicon glyphicon-user"></span><?= " ".@strtoupper($data['std_name']);?></a></li>
                     <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                 </ul>
             </div>

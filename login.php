@@ -52,25 +52,35 @@ include_once('helper.php');
                
                    <form method="post">
                    <h1 >Enter Your Credentials</h1><br>
-                   <input class="form-control" type="email" name="email" placeholder="Email" value="<?php  if(isset($_POST["user"])) echo $email; ?>" /> 
-                    <br>   
-                   
+                   <input class="form-control" type="email" name="email" placeholder="Email" value="<?php  if(isset($_POST["email"])) echo $_POST["email"]; ?>" /> 
+                    <br> 
+                        <input class="form-control" type="password" name="pass" placeholder="Password" value="" /> 
+                     <br>
                  <?php 
                   
                    if(isset($_POST["btn"]) =="Login" ){
                        $email = $_POST["email"];
-                        
+                        $pass =  $_POST['pass'];
                        $p = "/^[a-zA-Z]+[1][4-6]\-[a-zA-z]+\-[0-9]+@lgu\.edu\.pk$/";
                      if( preg_match($p , $email)){
                         
-                         success("match Found");
+                         $query = "select * from students where email = '".$email."' and pass = '".$pass."' and checked='1'";
+                         //echo $query;
+                         $result  =mysql_query($query);
+                        $rows =  mysql_num_rows($result);
+                         //echo $rows;    
+                         if($rows > 0 && $rows != 1){
+                             error('Wrong Credentials');
+                         }else if($rows == 1){
                          $_SESSION['email'] = $email;
                          header("Location: index.php");
-                         
+                         }else{
+                            error('Wrong Credentials'); 
+                         }
                          
                      }else{
                        
-                         error("Email did not match");
+                         error("Email Pattern did not match");
                      }
                    }
                    ?>
