@@ -102,20 +102,19 @@ $name_error =  false;
 
 
                                                           Select Department
-                                            <select  class="form-control" name="dep_selected">
+                                            <select  class="form-control" name="fac_selected">
                                                 <?php 
-                                                    $query =  "Select id, name from departments;";
+                                                    $query =  "Select id, name from degrees;";
                                                     $result =  mysql_query($query);
 
 
                                                     while( $fac =  mysql_fetch_array($result)){
-                                                      
-                                                      
                                                             $selected ="";
-                                                            if(isset($_POST['department_selected']) || isset($_POST['section']) ||isset($_POST['sessions'])  || isset($_POST['degree']) ){  
-                                                           
-                                                                if( strcmp_s($_POST["dep_selected"] ,$fac[1] ) == 0){
-                                                                      $_SESSION['dep'] = $_POST['dep_selected'] ;
+                                                            if(isset($_POST['faculties_selected']) || isset($_POST['section']) ||isset($_POST['sem_sub'])  || isset($_POST['department']) ){  
+
+                                                               // echo $_POST["fac_selected"]." ===".  $fac[1]."=>". ($_POST["fac_selected"] === $fac[1])."<br>";
+                                                                if( strcmp_s($_POST["fac_selected"] ,$fac[1] ) == 0){
+                                                                      $_SESSION['fac'] = $_POST['fac_selected'] ;
                                                                   echo "chala";
                                                                     $selected = "selected";
                                                                 }
@@ -128,70 +127,70 @@ $name_error =  false;
                                                     ?>
                                             </select>
                                             <br>
-                                            <button class="btn btn-default" name="department_selected" type="submit">Next</button>
+                                            <button class="btn btn-default" name="faculties_selected" type="submit">Next</button>
 
 
 
 
                                         <?php
 
-                                         if( isset($_SESSION["dep"])  ){  
-                                             
+                                         if(isset($_SESSION["fac"])  ){  
+
                                         ?>               
 
 
-                                                       <br>         <!-- Selecting degree -->
-                                         Select degree
-                                            <select  class="form-control" name="deg_selected">
+                                                       <br>         <!-- Selecting department -->
+                                         Select Department
+                                            <select  class="form-control" name="dep_selected">
                                                 <?php 
-                                                        $dep_id = getDepId($_SESSION['dep']);
-                                                    $query =  "Select name from degrees where dep_id = '".$dep_id[0]."';";
-                                                    echo "id : ".$dep_id[0];
+                                                        $fac_id = getfacId($_SESSION['fac']);
+                                                    $query =  "Select dep_id from faculties_deps where fac_id = '".$fac_id[0]."';";
+                                                    echo "id : ".$fac_id[0];
                                                     $result =  mysql_query($query);
                                                     echo "";
 
                                                     while( $sem =  mysql_fetch_array($result)){
 
                                                             $selected =""; 
-                                                            if(isset($_POST['degree']) || isset($_POST['sem_sub']) || isset($_POST['section']) ){
-                                                                if( strcmp_s($_POST["deg_selected"] , $sem[0]) == 0){
-                                                                  $_SESSION["deg"] = $_POST["deg_selected"];
+                                                            if(isset($_POST['department']) || isset($_POST['sem_sub']) || isset($_POST['section']) ){
+                                                                if( strcmp_s($_POST["dep_selected"] , getDepName($sem[0])[0]) == 0){
+                                                                  $_SESSION["dep"] = $_POST["dep_selected"];
                                                                     $selected = "selected";
                                                                 }
 
 
                                                         }
-                                                        echo " <option ".$selected .">".$sem[0]."</option>";
+                                                        echo " <option ".$selected .">".getDepName($sem[0])[0]."</option>";
 
                                                     }
                                                     ?>
                                             </select>
                                             <br>
-                                            <button class="btn btn-default" name="degree" type="submit">Next</button>
+                                            <button class="btn btn-default" name="department" type="submit">Next</button>
 
 
 
 
                                              <?php
                                              }
-                                             if(isset($_SESSION["deg"])  ){  
+                                             if(isset($_SESSION["dep"])  ){  
 
                                         ?>           
 
 
-                                          <br>         <!-- Selecting Session -->
-                                         Select Session
-                                            <select  class="form-control" name="sess_selected">
+                                          <br>         <!-- Selecting semester -->
+                                         Select Semester
+                                            <select  class="form-control" name="sem_selected">
                                                 <?php 
 
-                                                    $query =  "Select name from sessions where deg_id = '".getDegId($_SESSION["deg"])[0]."';";
+                                                    $query =  "Select sem_no from semesters where dep_id = '".getDepId($_SESSION["dep"])[0]."';";
                                                     $result =  mysql_query($query);
                                                     echo "";
 
                                                     while( $sem =  mysql_fetch_array($result)){
                                                             $selected =""; 
-                                                         if(isset($_POST['sessions']) || isset($_POST['section'])  ){
-                                                                if( $_POST["sess_selected"] == $sem[0]){
+                                                         if(isset($_POST['sem_sub']) || isset($_POST['section'])  ){
+                                                                if( $_POST["sem_selected"] == $sem[0]){
 
                                                                     $selected = "selected";
                                                                 }
@@ -204,7 +203,7 @@ $name_error =  false;
                                                     ?>
                                             </select>
                                             <br>
-                                            <button class="btn btn-default" name="sessions" type="submit">Next</button>
+                                            <button class="btn btn-default" name="sem_sub" type="submit">Next</button>
 
 
 
@@ -213,16 +212,12 @@ $name_error =  false;
 
                                             <?php
                                              }
-                                                if(isset($_POST["sessions"]) ){
+                                                if(isset($_POST["sem_sub"]) ){
                                                    echo "<br>Select Section";
-                                                    
-                                                    $sess_name =   $_POST["sess_selected"];
-                                                   $_SESSION["sessions"] =  $sess_name;
-                                                   $sess_id =  getSessId($sess_name , $_SESSION['deg'] );
-                                                  
-                                                    
-                                                    $query =  "select sec_id from sec_subs where sem_id ='".$sess_id[0]."' and deg_id='".getDegId($_SESSION["deg"])[0]."' ";
-                                                    
+                                                    $sem_id = $_POST["sem_selected"];
+                                                    $_SESSION["sem"] =  $sem_id;
+                                                    $query =  "select sec_id from sem_sec where sem_id ='".$sem_id."' and dep_id='".getDepId($_SESSION["dep"])[0]."' ";
+                                                   
                                                     $result =  mysql_query($query);
                                                     echo "<select name ='sec' class='form-control'>";
                                                     while($row  =  mysql_fetch_array($result)){
@@ -251,68 +246,56 @@ $name_error =  false;
                                      echo "&nbsp;<button type='submit' name='unset' class='btn btn-default'>Clear Form</button><br>";
 
                                 if(isset($_POST['unset'])){
-                                     unset($_SESSION['email']);
+
+                                    unset($_SESSION['sec']);
+                                    unset($_SESSION['sem']);
+                                    unset($_SESSION['email']);
                                     unset($_SESSION['name']);
-                                    unset($_SESSION['dep']);
-                                    unset($_SESSION['deg']);
-                                   
-                                    unset($_SESSION['sessions']);
-                                     unset($_SESSION['sec']);
+                                    unset($_SESSION['fac']);
+                                     unset($_SESSION['dep']);
                                     @header("Location: signup.php");
                                    
                                 }
 
                                 if(isset($_POST['section'])){
                                     @$_SESSION['sec'] =  $_POST['sec'];
-                                    
-                                    
-                                    
 
-                                    if( isset($_SESSION['name']) && isset($_SESSION['email']) && isset($_SESSION['dep']) && isset($_SESSION['deg']) && isset($_SESSION['sessions']) && isset($_SESSION['sec'])){
+                                    if( isset($_SESSION['name']) && isset($_SESSION['email']) && isset($_SESSION['fac']) && isset($_SESSION['dep']) && isset($_SESSION['sem']) && isset($_SESSION['sec'])){
                                             
-
+                                        
                                            $name =     mysql_real_escape_string($_SESSION["name"]);
                                            $email =   mysql_real_escape_string($_SESSION["email"]);
-                                           $dep =    mysql_real_escape_string($_SESSION["dep"]);
-                                           $deg =    mysql_real_escape_string($_SESSION["deg"]);
-                                           $sess =    mysql_real_escape_string($_SESSION["sessions"]);
+                                           $sem =    mysql_real_escape_string($_SESSION["sem"]);
                                            $sec =    mysql_real_escape_string($_SESSION["sec"]);
-                                           $sess_id =  getSessId($sess ,$deg )[0];
+                                           $fac =    mysql_real_escape_string($_SESSION["fac"]);
+                                            $dep =    mysql_real_escape_string($_SESSION["dep"]);
                                            $sec_no =  getSectionNum($sec)[0];
-                                            $dep_id =  getDepId($dep)[0];
-                                           $deg_id =  getDegId($deg)[0];
+                                           $dep_id =  getDepId($dep)[0];
                                            $hash =  md5( rand(1, 1000));
                                            $pass =  rand(10000000 , 99999999);
-                                    $insertion_query = "INSERT INTO students (std_id , std_name, email , pass , sess_id , sec_no , dep_id , deg_id, hash ,  checked)  values ('' , '".$name."' , '".$email."' , '".$pass."' ,'".$sess_id."' ,  '".$sec_no."' , '".$dep_id."'  , '".$deg_id."'  , '".$hash."' , '' )";
+                                    $insertion_query = "INSERT INTO students (std_id , std_name, email , pass ,sem_no ,sec_no , dep_id , hash ,  checked)  values ('' , '".$name."' , '".$email."' , '".$pass."' ,'".$sem."' ,  '".$sec_no."' , '".$dep_id."'  , '".$hash."' , '' )";
 
                                         $succ  =mysql_query($insertion_query);
                                             if($succ){
-                                                
-                                               
                                                 success("Record entered");
+                                            }else{
+                                              echo $insertion_query;
+                                                                                          }
+                                        // mail to be implemented here 
 
-                                               
-                                                // mail to be implemented here 
-
-                                                //end mail
-                                                //unset($_SESSION['email']); except main as mail is to be used in next page
-                                                unset($_SESSION['name']);
-                                                unset($_SESSION['dep']);
-                                                unset($_SESSION['deg']);
-                                                unset($_SESSION['sessions']);
-                                                unset($_SESSION['sec']);
-                                                @header("Location: mail.php ");
-                                                
-                                                
-                                            }
-                                        
-                                      
-                                     
-                            
+                                        //end mail
+                                            
+                                       
                                     }else{
                                         error("Some data missing");
                                     }
-                                       
+                                        unset($_SESSION['sec']);
+                                    unset($_SESSION['sem']);
+                                    unset($_SESSION['email']);
+                                    unset($_SESSION['name']);
+                                    unset($_SESSION['fac']);
+                                     unset($_SESSION['dep']);
+                                      @header("Location: #");
                                       }
                          
 
@@ -332,6 +315,16 @@ $name_error =  false;
 </div>
 
 
-<?php
-    require("footer.php");
-?>
+
+
+
+  
+    <!-- Page Content -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

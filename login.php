@@ -66,8 +66,14 @@ include_once('helper.php');
                         
                          $query = "select * from students where email = '".$email."' and pass = '".$pass."' and checked='1'";
                          //echo $query;
-                         $result  =mysql_query($query);
-                        $rows =  mysql_num_rows($result);
+                         $query_for_unverified = "select * from students where email = '".$email."' and pass = '".$pass."' and checked='0'";
+                         $result_for_unverified  = @mysql_query($query_for_unverified);
+                         $num_rows_of_unverified =  @mysql_num_rows($result_for_unverified);
+                         if($num_rows_of_unverified == 1 ){
+                            warning("Please verify Account by visiting link in email");
+                         }else{
+                         $result  = @mysql_query($query);
+                        $rows =  @mysql_num_rows($result);
                          //echo $rows;    
                          if($rows > 0 && $rows != 1){
                              error('Wrong Credentials');
@@ -76,6 +82,7 @@ include_once('helper.php');
                          header("Location: index.php");
                          }else{
                             error('Wrong Credentials'); 
+                         }
                          }
                          
                      }else{

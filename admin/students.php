@@ -22,6 +22,9 @@
             }
 
     function selectdep(value){
+       console.log( $("#sec").innerHTML );
+        $("#sec").innerHTML =  "<option>Selects Section</option>";
+        console.log($("#sec").innerHTML );
             console.log( value +" ayi hai");
                  $.ajax({
                     type: "POST",
@@ -48,13 +51,13 @@
                  });
             } 
 
-             function sem_section(sem , dep ){
-        console.log("from sec_selection sem: "+ sem +" dep: "+ dep.value); 
+             function deg_section(deg){
+        console.log("from deg_selection deg "+ deg); 
 
                  $.ajax({
                     type: "POST",
                     url: "includes/getStudentData.php",
-                   data: { "sem_for_section": sem , "dep_for_section": dep.value },
+                   data: {  "deg_for_section": deg },
                     success: function(data){
                         $("#sec").html(data);
                     }
@@ -62,12 +65,12 @@
                  });
             } 
 
-               function sem_selected(sem , dep ){
+               function deg_selected(sem , dep ){
                 console.log("sem: "+ sem +" dep: "+ dep.value);
                  $.ajax({
                     type: "POST",
                     url: "includes/getStudentData.php",
-                    data: { "sem_sel": sem , "dep_sel": dep.value },
+                    data: { "deg_sel": sem , "dep_sel": dep.value },
                     success: function(data){
                         $("#student_data").html(data);
                     }
@@ -81,7 +84,7 @@
                  $.ajax({
                     type: "POST",
                     url: "includes/getStudentData.php",
-                    data: { "osec_sel": sec ,"osem_sel": sem.value , "odep_sel": dep.value },
+                    data: { "secc_sel": sec ,"degg_sel": sem.value , "depp_sel": dep.value },
                     success: function(data){
                         $("#student_data").html(data);
                     }
@@ -92,8 +95,8 @@
 
 
 <h1 class="page-header">
-    Students Page
-    <small>Subheading</small>
+    Students Info
+    <small></small>
 </h1>
 
 <ul class="breadcrumb">
@@ -101,7 +104,8 @@
        Filters
     </li>
     <li>
-       <select  name="dep" id="dep" onchange ="selectdep(this.value), sem_dep(this.value)"  >
+             Departments:
+       <select  class="form-control xl3" name="dep" id="dep" onchange ="selectdep(this.value), sem_dep(this.value)"  >
            <option>Select Department</option>
               <?php $q  ="select * from departments";
                 $result = mysql_query($q);
@@ -113,13 +117,15 @@
        </select>
     </li>   
     <li>
-      <select name="sem"  id="sem"  onchange ="sem_selected( this.value , document.getElementById('dep')) , sem_section(this.value , document.getElementById('dep'))   " >
-             <option>Select A DEPARTMENT</option>
+    Degrees:
+      <select class="form-control" name="sem"  id="sem"  onchange ="deg_selected( this.value , document.getElementById('dep')) , deg_section(this.value ) " >
+             <option>Select Semester</option>
      </select>
     </li>
     <li>
-      <select name="sec"  id="sec" onchange ="sec_selected( this.value  , document.getElementById('sem'), document.getElementById('dep'))"  >
-             <option>Select A semester</option>
+        Sections:
+      <select class="form-control"  name="sec"  id="sec" onchange ="sec_selected( this.value  , document.getElementById('sem'), document.getElementById('dep'))"  >
+             <option>Select Section</option>
      </select>
     </li>
     <li>
@@ -131,9 +137,10 @@
             <th>Name</th>
             <th>Email</th>
             <th>Password</th>
-            <th>Semester</th>
+            <th>Session</th>
             <th>Sec</th>
             <th>Department</th>
+            <th>Degree</th>
             <th>verified</th>
         </thead>
 
@@ -147,9 +154,10 @@
                                 <td>".$row['std_name']."</td>
                                 <td>".$row['email']."</td>
                                 <td>".$row['pass']."</td>
-                                <td>".$row['sem_no']."</td>
+                                <td>".getSessName($row['sess_id'])[0]."</td>
                                 <td>".getSectionName($row['sec_no'])[0]."</td>
                                 <td>".getDepName($row['dep_id'])[0]."</td>
+                                <td>".getDegName($row['deg_id'])[0]."</td>
                                 <td>".$row['checked']."</td>
                              </tr>   
                             ";

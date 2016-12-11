@@ -1,6 +1,6 @@
 <?php
-    include_once("../helper.php");
-    include_once("../connection.php")
+    @include_once("../helper.php");
+    @include_once("../connection.php")
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,21 +46,8 @@
         
     </script>
 
-    <script type="text/javascript">
-    function selectdep(value){
-            console.log( value +" ayi hai");
-                 $.ajax({
-                    type: "POST",
-                    url: "getStudentData.php",
-                    data: {"dep" : value},
-                    success: function(data){
-                        $("#student_data").html("dhoom tana nana");
-                    }
-                 
-                 });
-            }
-</script>
-    
-    
+
+
+
     
 </head>

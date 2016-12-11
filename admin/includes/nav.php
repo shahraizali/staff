@@ -7,7 +7,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin</a>
+                <a class="navbar-brand" href="index.html">Admin Pannel</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -116,14 +116,14 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    <li  <?php if( @$_SESSION['page_name'] ==  "dashboard"){echo "style='background-color:black'" ;} ?>>
+                        <a href="index.php"  name="default"  ><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+                    </li <?php if( @$_SESSION['page_name'] ==  "student"){echo "style='background-color:black'" ;} ?>>
                     <li>
-                        <a href="#" onclick="getter(this.name)" name="default"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+                        <a href="#"  onclick="getter(this.name)" name="students" ><i class="fa fa-fw fa-table" ></i>Students</a>
                     </li>
-                    <li>
-                        <a href="#"  onclick="getter(this.name)" name="students" ><i class="fa fa-fw fa-table" ></i><span name="myname">Students</span></a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="getter(this.name)" name="Form" ><i class="fa fa-fw fa-edit" id="form" ></i><span >Form</span></a>
+                    <li  <?php if( @$_SESSION['page_name'] ==  "form"){echo "style='background-color:black'" ;} ?>>
+                        <a href="form.php" name="Form" ><i class="fa fa-fw fa-edit" id="form"   ></i><span >Form</span></a>
                     </li>
                     <li>
                         <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i>Bootstrap Elements</a>

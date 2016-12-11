@@ -61,6 +61,35 @@
         return $no;
     }
 
+
+     function getDegId($n){
+        $newQ =  "select id from degrees where name  = '".$n."'";
+        $r = mysql_query($newQ);
+        $no =  mysql_fetch_array($r);
+        return $no;
+    }
+ function getDegName($n){
+        $newQ =  "select name from degrees where id   = '".$n."'";
+        $r = mysql_query($newQ);
+        $no =  mysql_fetch_array($r);
+        return $no;
+    }
+
+     function getSessName($n){
+        $newQ =  "select name from sessions where id  = '".$n."'";
+                        $r = mysql_query($newQ);
+                        $no =  mysql_fetch_array($r);
+        return $no;
+    }
+
+      function getSessId($n , $d){
+          
+        $newQ =  "select id from sessions where name  = '".$n."' and deg_id = '".getDegId($d)[0]."'";
+        $r = mysql_query($newQ);
+        $no =  mysql_fetch_array($r);
+        return $no;
+    }
+
     function strcmp_s($f , $s){
         return strcmp( str_replace(' ', '' , $f) ,  str_replace(' ', '' , $s)  );
     }
