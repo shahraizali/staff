@@ -118,7 +118,7 @@
     </li>   
     <li>
     Degrees:
-      <select class="form-control" name="sem"  id="sem"  onchange ="deg_selected( this.value , document.getElementById('dep')) , deg_section(this.value ) " >
+      <select class="form-control" name="sem"  id="sem"  onchange ="deg_selected( this.value , document.getElementById('dep') ) , deg_section(this.value ) " >
              <option>Select Semester</option>
      </select>
     </li>

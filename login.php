@@ -61,7 +61,8 @@ include_once('helper.php');
                    if(isset($_POST["btn"]) =="Login" ){
                        $email = $_POST["email"];
                         $pass =  $_POST['pass'];
-                       $p = "/^[a-zA-Z]+[1][4-6]\-[a-zA-z]+\-[0-9]+@lgu\.edu\.pk$/";
+                       $p = "/^[a-zA-Z]+[1][2-6]\-[a-zA-z]+\-[0-9]+@lgu\.edu\.pk$/";   // abc12-abc-121@lgu.edu.pk
+                                                                                       // fa14-bscs-47@lgu.edu.pk
                      if( preg_match($p , $email)){
                         
                          $query = "select * from students where email = '".$email."' and pass = '".$pass."' and checked='1'";

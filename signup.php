@@ -1,3 +1,11 @@
+<!--
+
+   Signs up the students
+
+-->
+
+
+
 <?php
    include_once("header2.php");
    $em_correct =  false;
@@ -282,7 +290,7 @@ $name_error =  false;
                                             $dep_id =  getDepId($dep)[0];
                                            $deg_id =  getDegId($deg)[0];
                                            $hash =  md5( rand(1, 1000));
-                                           $pass =  rand(10000000 , 99999999);
+                                           $pass =  getRandomString();
                                     $insertion_query = "INSERT INTO students (std_id , std_name, email , pass , sess_id , sec_no , dep_id , deg_id, hash ,  checked)  values ('' , '".$name."' , '".$email."' , '".$pass."' ,'".$sess_id."' ,  '".$sec_no."' , '".$dep_id."'  , '".$deg_id."'  , '".$hash."' , '' )";
 
                                         $succ  =mysql_query($insertion_query);

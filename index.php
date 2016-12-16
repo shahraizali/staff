@@ -1,3 +1,11 @@
+<!--
+
+    This page which will be displayed after user is logged in other wise redirected to login.php
+    
+    authentication is done in header.php file 
+
+-->
+
 <?php  include_once("header.php");?>
 
     <div class="container">
@@ -14,23 +22,8 @@
 
                         <!-- selecting  Subjects -->
 
-                        Select Subject
-                        <select class="form-control" name="sub_selected" >    
-                        <?php
-                          $q = "select sub_id from sec_subs where sem_id = '".$data['sem_no']."' and sec_id= '".$data['sec_no']."' and dep_id =  '".$data['dep_id']."' ;";
-                                $res = mysql_query($q);
-                            while($sub =  mysql_fetch_array($res) ){
-                                $selected =  "";
-                                    if($_POST['sub_selected'] == getSubName($sub[0])[1]){
-                                        $selected =  "selected";
-                                    }
-                                echo "<option ".$selected.">".getSubName($sub[0])[1]."</option>";
-                            }
-                            
-                        ?>
-                        </select>
-                        <br>
-                        <input class="btn btn-default" type="submit" name="submit" value="select" >
+                        Nothing here yet
+                     
                     </form>
                     
                     

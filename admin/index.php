@@ -1,4 +1,10 @@
- 
+<!--
+      
+      Admin pannel Index
+
+-->
+
+  
 <?php include_once("includes/header.php");
                 include_once("../helper.php");
             include_once("../connection.php");
@@ -8,12 +14,10 @@
     ?>
 
  <script type="text/javascript">
-  function gg(){
-    console.log("gfhgh");
-  }
+
         function edit_staff( id ){
           console.log("id ayi hai : "+ id);
-           $("#staff_modal_data").html("ygjgjgjhghjgh");
+           
            $.ajax({
               type: "POST",
               url: "includes/getDashboardData.php",
@@ -26,7 +30,6 @@
            });
 
         }
-
         function edit_department(id){
             $.ajax({
               type: "POST",
@@ -39,12 +42,15 @@
 
         }
 
+
+
         function edit_degree(id ){
           $.ajax({
               type: "POST",
               url: "includes/getDashboardData.php",
               data: { "deg_id": id , "deg_edit": "true"},
               success: function(data){
+
                     $("#deg_modal_data").html(data);
               }
 
@@ -63,6 +69,10 @@
             });
         }
 
+    function update_dep(){
+            console.log("lo g updating department");
+            
+    }
     </script>
 
 <body>
@@ -97,11 +107,13 @@
 <div class="row"  >
 
   <!--departments section-->
+  
+  
     <div class="col-md-6">
-    <h1  data-toggle="collapse" data-target="#dep_table" class="well">Departments</h1> 
+    <h1  data-toggle="collapse" data-target="#dep_table"  class="well"  >Departments</h1> 
     
 
-    <div class="collapse" id="dep_table">
+    <div class="collapse" id="dep_table"  >
        
 
         <table class="table table-striped"  > 
@@ -110,29 +122,38 @@
                 <th>Add / Delete</th>
                    <th>Edit</th>
             </thead>
-            <tbody>
+            <tbody >
+                <div id="depp">
                 <?php
-
-                $q =  "select * from departments";
-                $r = mysql_query($q);
-                while( $row = mysql_fetch_assoc($r)){
-                    echo "<tr>
-                    <td>".$row['name']."</td>
-                     <td><button class='btn btn-danger' name='".$row['id']."'>Delete</button></td>
-                       <td><button class='btn btn-default' onclick='edit_department(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#department_edit_modal'>Edit</button></td>
-                    </tr>";
-                }
-                
-                ?>
+                     if(isset($_POST["add_dep"])){
+                          addDepartment($_POST["name_of_dep"]);
+                     }
+                     if(isset($_POST["del_dep"])){
+                          delDepartment($_POST["del_dep"]);
+                     }
+                     if(isset($_POST['update_dep'])){
+                        updateDepartment($_POST['name_of_dep'] , $_POST['update_dep']);
+                     }
+                      echo getDepartments();
+                 
+                ?></div>
                 <tr>
-                    <td><input type="text" class="form-control" placeholder="Name"/></td>
-                    <td><button class='btn btn-success' type="submit"  style="width:70px" > Add </button></td>
+                <form method="POST" >
+                  
+                    <td>
+                      <input name="name_of_dep" type="text"  class="form-control" placeholder="Name"/>
+                    </td>
+                    <td>
+                      <button class='btn btn-success' type="submit" name="add_dep" type="submit"  style="width:70px" > Add </button> 
+                    </td>
+                     </form>
                 </tr>
 
             </tbody>
         </table>
     </div>
-       <div class="modal fade" id="department_edit_modal" role="dialog">
+
+      <div class="modal fade" id="department_edit_modal" role="dialog">
                 <div class="modal-dialog">
 
                   <!-- Modal content-->
@@ -141,8 +162,10 @@
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                       <h4 class="modal-title">Editor</h4>
                     </div>
-                      <div class="modal-body" id="dep_modal_data">
-                          
+                      <div class="modal-body" >
+                           <form method="post"  id="dep_modal_data">
+                              
+                           </form>
                          
                       </div>
                     <div class="modal-footer">
@@ -152,6 +175,7 @@
 
                 </div>
               </div>
+      
     </div>
 
     <!--degrees section-->
@@ -166,7 +190,22 @@
                 <th>Edit</th>
             </thead>
             <tbody>
-                <?php
+              <div id="degg">
+              <?php
+                     if(isset($_POST["add_deg"])){
+                          addDegree($_POST["deg_name"] , $_POST['deg_selected'] );
+                     }
+                     if(isset($_POST["del_deg"])){
+                          delDegree($_POST["del_deg"]);
+                     }
+                     if(isset($_POST['update_deg'])){
+                        updateDegree($_POST['update_deg'] ,$_POST['deg_name'] , $_POST['deg_selected']);
+                     }
+                      
+                 
+                ?>
+                </div>
+           <?php
 
                 $q =  "select * from degrees";
                 $r = mysql_query($q);
@@ -174,14 +213,15 @@
                     echo "<tr>
                     <td>".$row['name']."</td>
                     <td>".getDepName($row['dep_id'])[0]."</td>
-                    <td><button class='btn btn-danger' name='".$row['id']."'>Delete</button></td>
+                    <td> <form method='post'><button class='btn btn-danger' name='del_deg' value='".$row['id']."'>Delete</button> </form></td>
                     <td><button class='btn btn-default' onclick='edit_degree(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#degree_edit_modal'>Edit</button></td>
                     </tr>";
                 }
                 
                 ?>
                 <tr>
-                    <td><input type="text" class="form-control" placeholder="Degree Name"/></td>
+                <form method="post" >
+                    <td><input type="text" name="deg_name" class="form-control" placeholder="Degree Name"/></td>
                     <td><select name="deg_selected" class="form-control">
                             <?php
                              $q =  "select * from departments";
@@ -191,14 +231,14 @@
                              }
                         ?>
                         </select></td>
-                    <td><button class='btn btn-success' type="submit"  style="width:70px" > Add </button></td>
+                    <td><button class='btn btn-success' name="add_deg" type="submit"  style="width:70px" > Add </button></td>
+                </form>
                 </tr>
 
             </tbody>
         </table>
      </div>
-
-      <div class="modal fade" id="degree_edit_modal" role="dialog">
+            <div class="modal fade" id="degree_edit_modal" role="dialog">
                 <div class="modal-dialog">
 
                   <!-- Modal content-->
@@ -218,7 +258,7 @@
 
                 </div>
               </div>
-
+      
 
     </div>
 
@@ -237,6 +277,22 @@
                 <th>Edit</th>
             </thead>
             <tbody>
+                <div id="sess">
+              <?php
+                     if(isset($_POST["add_sess"])){
+                          addSession($_POST["sess_name"] ,$_POST["sess_start"], $_POST["sess_end"], $_POST['deg_selected'] );
+                     }
+                     if(isset($_POST["del_sess"])){
+                          delSession($_POST["del_sess"]);
+                     }
+                     if(isset($_POST['update_sess'])){
+                         
+                        updateSession( $_POST['update_sess'] , $_POST["sess_name"] ,$_POST["sess_start"], $_POST["sess_end"], $_POST['deg_selected']);
+                     }
+                      
+                 
+                ?>
+                </div>
                 <?php
 
                 $q =  "select * from sessions";
@@ -247,7 +303,7 @@
                     <td>".$row['start']."</td>
                     <td>".$row['end']."</td>
                     <td>".getDegName($row['deg_id'])[0]."</td>
-                    <td><button class='btn btn-danger' name='".$row['id']."'>Delete</button></td>
+                    <td><form method='post'><button class='btn btn-danger' name='del_sess' value='".$row['id']."'>Delete</button></form></td>
                     <td><button class='btn btn-default' onclick='edit_sessions(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#sess_edit_modal'>Edit</button></td>
 
                     </tr>";
@@ -255,27 +311,28 @@
                 
                 ?>
                 <tr>
-                    <td><input type="text" class="form-control" placeholder="Degree Name"/></td>
-                    <td><input type="number" pattern="[2][0][1-9][0-9]" title="Enter correct year" class="form-control" placeholder="start date"/></td>
-                    <td><input type="number"  pattern="[2][0][1-9][0-9]" title="Enter correct year" class="form-control" placeholder="ending date"/></td>
-                    <td><select name="deg_selected" class="form-control">
-                            <?php
-                             $q =  "select * from degrees";
-                             $r = mysql_query($q);
-                             while( $row = mysql_fetch_assoc($r)){
-                                echo "<option value='".$row['id']."'>".$row['name']."</option>";
-                             }
-                        ?>
-                        </select></td>
-                    <td><button class='btn btn-success' type="submit"  style="width:70px" > Add </button></td>
+                   <form method="post">
+                          <td><input type="text" name="sess_name" class="form-control" placeholder="Session Name"/></td>
+                          <td><input type="number" name="sess_start" pattern="[2][0][1-9][0-9]" title="Enter correct year" class="form-control" placeholder="start date"/></td>
+                          <td><input type="number" name="sess_end" pattern="[2][0][1-9][0-9]" title="Enter correct year" class="form-control" placeholder="ending date"/></td>
+                          <td><select name="deg_selected" class="form-control">
+                                  <?php
+                                   $q =  "select * from degrees";
+                                   $r = mysql_query($q);
+                                   while( $row = mysql_fetch_assoc($r)){
+                                      echo "<option value='".$row['id']."'>".$row['name']."</option>";
+                                   }
+                              ?>
+                              </select></td>
+                          <td><button class='btn btn-success' name="add_sess" type="submit"  style="width:70px" > Add </button></td>
+                   </form>
                 </tr>
 
             </tbody>
         </table>
         </div>
 
-
-          <div class="modal fade" id="sess_edit_modal" role="dialog">
+           <div class="modal fade" id="sess_edit_modal" role="dialog">
                 <div class="modal-dialog">
 
                   <!-- Modal content-->
@@ -297,6 +354,8 @@
               </div>
   
 
+          
+
     </div>
 
 
@@ -312,6 +371,22 @@
                 <th>Edit</th>
             </thead>
             <tbody>
+                <div id="staff">
+              <?php
+                     if(isset($_POST["add_staff"])){
+                          addStaff($_POST["staff_name"] ,$_POST["dep_selected"]);
+                     }
+                     if(isset($_POST["del_staff"])){
+                          delStaff($_POST["del_staff"]);
+                     }
+                     if(isset($_POST['update_staff'])){
+                         
+                        updateStaff($_POST['update_staff'] , $_POST["staff_name"] ,$_POST["dep_selected"]);
+                     }
+                      
+                 
+                ?>
+                </div>
                 <?php
 
                 $q =  "select * from staff";
@@ -321,7 +396,7 @@
 
                             <td>".$row['name']."</td>
                             <td>".getDepName($row['dep_id'])[0]."</td>
-                            <td><button class='btn btn-danger' name='".$row['id']."'>Delete</button></td>
+                            <td><form method='post'><button class='btn btn-danger' name='del_staff' value='".$row['id']."'>Delete</button></form></td>
                             <td><button class='btn btn-default'  name='".$row['id']."'  data-toggle='modal' data-target='#staff_edit_modal'  onclick =\"edit_staff(this.name)\">Edit</button></td>
                        </tr>";
                 }
@@ -345,8 +420,9 @@
 
             </tbody>
         </table>
-            
-             <div class="modal fade" id="staff_edit_modal" role="dialog">
+        </div>
+
+          <div class="modal fade" id="staff_edit_modal" role="dialog">
                 <div class="modal-dialog">
 
                   <!-- Modal content-->
@@ -366,23 +442,11 @@
 
                 </div>
               </div>
-  
-            
-        </div>
     </div>
 
-      <!--Sections and subjects -->
-
-      <div class="col-md-6">
-        <h1 class="well" data-toggle="collapse" data-target="#sem_sec">Semester sections</h1>
-        <div>
-          
-        </div>
-
-      </div>
-
-
-
+      
+  
+            
 
 
 
