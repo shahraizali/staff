@@ -1,14 +1,24 @@
 <?php session_start();
-    if(!$_SESSION['email']){
+    include_once("connection.php");
+    if(!$_SESSION['email'] && !$_SESSION['pass']){
         header("Location: login.php");
-    }
+    }else{
+         $q = "select *  from students where email = '".$_SESSION['email']."' and pass ='".$_SESSION['pass']."';";
+                            $res =  mysql_query($q);
+                           $data =  mysql_fetch_array($res);
+                            if(!mysql_num_rows($res) == 1){
+                                header("Location: login.php");
+                            }else{
+                                    // great
+                            }
+                            
+                            
+    
     include_once("helper.php");
     include_once("connection.php");
 
    // getting requitred data from students table 
-                            $q = "select std_id , std_name , sem_no, sec_no , dep_id  from students where email = '".$_SESSION['email']."' ;";
-                            $res =  mysql_query($q);
-                            $data = mysql_fetch_assoc($res);
+                           
                                   
             
 
@@ -78,3 +88,7 @@
         </div>
         <!-- /.container -->
     </nav>
+<?php
+
+}
+?>

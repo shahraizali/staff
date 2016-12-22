@@ -2,7 +2,7 @@
     $server ="localhost";
     $username = "root";
     $pass = "";
-    $db_name = "staff";
+    $db_name = "online_staff";
     mysql_connect($server , $username , $pass);
     $selected = mysql_select_db($db_name);
     

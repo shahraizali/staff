@@ -229,7 +229,7 @@ $name_error =  false;
                                                    $sess_id =  getSessId($sess_name , $_SESSION['deg'] );
                                                   
                                                     
-                                                    $query =  "select sec_id from sec_subs where sem_id ='".$sess_id[0]."' and deg_id='".getDegId($_SESSION["deg"])[0]."' ";
+                                                    $query =  "select sec_id from sem_sec where sem_id ='".$sess_id[0]."' and deg_id='".getDegId($_SESSION["deg"])[0]."' ";
                                                     
                                                     $result =  mysql_query($query);
                                                     echo "<select name ='sec' class='form-control'>";
@@ -303,7 +303,7 @@ $name_error =  false;
                                                 // mail to be implemented here 
 
                                                 //end mail
-                                                //unset($_SESSION['email']); except main as mail is to be used in next page
+                                                //unset($_SESSION['email']); except mail as mail is to be used in next page
                                                 unset($_SESSION['name']);
                                                 unset($_SESSION['dep']);
                                                 unset($_SESSION['deg']);

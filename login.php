@@ -80,7 +80,8 @@ include_once('helper.php');
                              error('Wrong Credentials');
                          }else if($rows == 1){
                          $_SESSION['email'] = $email;
-                         header("Location: index.php");
+                         $_SESSION['pass'] =  $pass;
+                          header("Location: index.php");
                          }else{
                             error('Wrong Credentials'); 
                          }

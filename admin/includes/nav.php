@@ -123,7 +123,7 @@
                         <a href="#"  onclick="getter(this.name)" name="students" ><i class="fa fa-fw fa-table" ></i>Students</a>
                     </li>
                     <li  <?php if( @$_SESSION['page_name'] ==  "form"){echo "style='background-color:black'" ;} ?>>
-                        <a href="form.php" name="Form" ><i class="fa fa-fw fa-edit" id="form"   ></i><span >Form</span></a>
+                        <a href="subjects.php" name="Form" ><i class="fa fa-fw fa-edit" id="form"   ></i><span >Subjects</span></a>
                     </li>
                     <li>
                         <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i>Bootstrap Elements</a>
