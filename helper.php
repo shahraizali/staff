@@ -176,8 +176,9 @@ function getDepartments(){
                 while( $row = mysql_fetch_assoc($r)){
                    $d .=  "<tr>
                     <td>".$row['name']."</td>
-                        <td><form method='post'> <button class='btn btn-danger' name='del_dep' value ='".$row['id']."'>Delete</button> </form></td>
+                        <td><form method='post'> <button class='btn btn-danger' name='del_dep' value ='".$row['id']."'>Delete</button> <input style=\"display:none\" type=\"text\" name=\"dep_toggle\" value=\"in\" /> </form></td>
                         <td><button class='btn btn-default' onclick='edit_department(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#department_edit_modal'>Edit</button></td>
+                       
                     </tr>";
                 }
                 return $d;
@@ -186,6 +187,14 @@ function getDepartments(){
 
 function addDepartment($name){
     $created_date = date("Y-m-d H:i:s");
+    
+     $q =  "select * from departments where name = '".mysql_real_escape_string($name)."'; ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+               
+            if($rows < 1){
+ 
     $q =  "insert into departments( id , name , created , updated ) values ('' , '".mysql_real_escape_string($name)."' , '".$created_date."' , '".$created_date."') ; ";
                 
                 $check = mysql_query($q);
@@ -193,7 +202,9 @@ function addDepartment($name){
                     success("New Department has been added");
                 }else{
                     error("Something went wrong");
-                }
+                }}else{
+                 error("Duplicate entry not allowed");
+            }
 }
 function delDepartment($id){
     $q =  "delete from departments where id =  '".mysql_real_escape_string($id)."' ; ";
@@ -234,6 +245,12 @@ function updateDepartment($name , $id){
 function addDegree($deg_name , $dep_id){
     $created_date = date("Y-m-d H:i:s");
  
+     $q =  "select * from degrees where name = '".mysql_real_escape_string($deg_name)."' and dep_id='".mysql_real_escape_string($dep_id)."'; ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+               
+            if($rows < 1){
  
     $q =  "insert into degrees( id , name , dep_id , created  ) values ('' , '".$deg_name."'  ,'".$dep_id."' ,  '".$created_date."' ) ; ";
                 
@@ -245,6 +262,9 @@ function addDegree($deg_name , $dep_id){
                   
                     error("Something went wrong");
                 }
+                }else{
+                 error("Duplicate entry not allowed");
+            }
 }
 
 function delDegree($id){
@@ -283,7 +303,12 @@ function updateDegree($id , $deg_name , $dep_id){
 
 function addSession( $sess_name , $start , $end , $deg_id){
          $created_date = date("Y-m-d H:i:s");
- 
+         $q =  "select * from sessions where name = '".mysql_real_escape_string($sess_name)."'  and start = '".mysql_real_escape_string($start)."' and end ='".mysql_real_escape_string($end)."' and deg_id ='".mysql_real_escape_string($deg_id)."'; ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+               
+            if($rows < 1){
  
     $q =  "insert into sessions( id , name , start , end , deg_id , created  ) values ('' , '".$sess_name."'  ,'".$start."' ,  '".$end."' , '".$deg_id."'  , '".$created_date."') ; ";
                 
@@ -295,6 +320,9 @@ function addSession( $sess_name , $start , $end , $deg_id){
                   
                     error("Something went wrong");
                 }
+            }else{
+                 error("Duplicate entry not allowed");
+            }
     
 }   
 
@@ -340,7 +368,12 @@ function updateSession($id , $sess_name , $start , $end , $deg_id){
 function addStaff( $name , $dep_id){
         
             $created_date = date("Y-m-d H:i:s");
- 
+            $q =  "select * from staff where name = '".mysql_real_escape_string($name)."'  and dep_id = '".mysql_real_escape_string($dep_id)."'; ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+               
+            if($rows < 1){
  
               $q =  "insert into staff( id , name , dep_id , created  ) values ('' , '".mysql_real_escape_string($name)."'  ,'".$dep_id."', '".$created_date."') ; ";
                 
@@ -351,7 +384,10 @@ function addStaff( $name , $dep_id){
                 }else{
                   
                     error("Something went wrong");
-                }
+                } 
+            }else{
+                 error("Duplicate entry not allowed");
+            }
     
 }
 
@@ -511,7 +547,7 @@ function updateSubject_sec( $id , $sub_id , $staff_id){
    
        
               $q =  "update sec_subs set  sub_id = '".$sub_id."' , staff_id = '".$staff_id."' where id = '".mysql_real_escape_string($id)."' ";
-                echo $q;
+               // echo $q;
                 $check = mysql_query($q);
                
                 if($check){
@@ -573,6 +609,8 @@ function addSubject( $code  , $name , $dep_id){
             }else{
                  error("Duplicate entry not allowed");
             }
+    
+    
     
 }
 

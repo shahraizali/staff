@@ -27,7 +27,7 @@
              $data =  mysql_fetch_assoc($r);
 
             ?>
-               
+                        <input style="display:none" type="text" name="dep_toggle" value="in" />
                     <input type="text" class="form-control" value="<?php echo $data['name'] ?>" name="name_of_dep" placeholder=" Name"/>
                     <br>
                     <button class='btn btn-success' name="update_dep" type="submit" value="<?= $id ?>" style="width:70px" > Update </button>
@@ -48,6 +48,7 @@
              $data =  mysql_fetch_assoc($r);
               ?>
                 <form method="post">
+                    
                     Degree Name:
                     <input type="text" class="form-control" value="<?php echo $data['name'] ?>" name="deg_name" placeholder=" Name"/>
                     <br>
@@ -70,6 +71,7 @@
                         </select>
                     <br>
                     <button class='btn btn-success' name="update_deg" value ="<?= $id ?>"  type="submit"  style="width:70px" > Update </button>
+                    <input style='display:none' type='text' name='deg_toggle' value='in' />
                     </form>
 
             <?php
@@ -116,6 +118,7 @@
                     </select>
                         <br>
                     <button class='btn btn-info' type="submit" value="<?php echo $sess_id;?>" name='update_sess' style="width:70px" > Update </button>
+                    <input style='display:none' type='text' name='sess_toggle' value='in' />
                  </form>
             <?php
         }
@@ -153,6 +156,7 @@
                         </select>
                         <br>
                     <button class='btn btn-success' name="update_staff" value="<?=  $id?>" type="submit"  style="width:70px" > Update </button>
+                    <input style='display:none' type='text' name='staff_toggle' value='in' />
                     </form>
 
 
@@ -228,6 +232,7 @@
                         <br>
                         
                     <button class='btn btn-success' name="update_section" value="<?=  $id?>" type="submit"   style="width:70px" > Update </button>
+                     <input style='display:none' type='text' name='sec_toggle' value='in' />
                     </form>
 
             <?php
@@ -274,7 +279,11 @@
                                     echo "<tr>
                                             <td>
                                                 <select name='selected_subs' class='form-control'>";
-                                                    $sub_q =  'SELECT * FROM `all_subs` WHERE 1';
+                                                         $q  =  "select dep_id from degrees where id  =  '".$sem_sec_data['deg_id']."' ; ";
+                                $r  =  mysql_query($q);
+                               $dep_id  =  mysql_fetch_assoc($r);
+                                            
+                                                    $sub_q =  "SELECT * FROM `all_subs` WHERE dep_id =  '".$dep_id['dep_id']."'  ";
                                                     $res = mysql_query($sub_q);
                                                     while($d =  mysql_fetch_assoc($res)){
                                                         $sel = "";
@@ -287,7 +296,7 @@
                                              </td>
                                                 <td>
                                                  <select name='selected_staff' class='form-control'>";
-                                                    $sub_q =  'SELECT * FROM staff';
+                                                    $sub_q =  "SELECT * FROM staff where dep_id = '".$dep_id['dep_id']."'";
                                                     $res = mysql_query($sub_q);
                                                     while($d =  mysql_fetch_assoc($res)){
                                                         $sel = "";
@@ -307,6 +316,7 @@
                                                       
                         </tbody>
                     </table>
+                              <input style='display:none' type='text' name='sec_sub_toggle' value='in' />
             
 </form>  
                             
@@ -371,7 +381,7 @@
       }
 
       if(isset($_POST['get_sub_for_sem_sec_id'])){
-       $sem_sec_id  = $_POST['sem_sec_id'];
+          $sem_sec_id  = $_POST['sem_sec_id'];
         
          
       

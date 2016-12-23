@@ -204,7 +204,7 @@
     <h1  data-toggle="collapse" data-target="#dep_table"  class="well"  >Departments</h1> 
     
 
-    <div class="collapse" id="dep_table"  >
+    <div class="collapse<?php if(isset($_POST['dep_toggle'])){  echo " ".$_POST['dep_toggle'];}?>" id="dep_table"  >
        
 
         <table class="table table-striped"  > 
@@ -216,8 +216,11 @@
             <tbody >
                 <div id="depp">
                 <?php
-                     if(isset($_POST["add_dep"])){
+        
+                   
+                    if(isset($_POST["add_dep"])){
                           addDepartment($_POST["name_of_dep"]);
+                         
                      }
                      if(isset($_POST["del_dep"])){
                           delDepartment($_POST["del_dep"]);
@@ -237,7 +240,8 @@
                     <td>
                       <button class='btn btn-success' type="submit" name="add_dep" type="submit"  style="width:70px" > Add </button> 
                     </td>
-                     </form>
+                        <input style="display:none" type="text" name="dep_toggle" value="in" />
+                    </form>
                 </tr>
 
             </tbody>
@@ -281,7 +285,7 @@
 				 */-->
     <div class="col-md-6" >
          <h1  data-toggle="collapse" data-target="#deg_table" class="well">Degrees</h1> 
-        <div class="collapse" id="deg_table">
+        <div class="collapse<?php if(isset($_POST['deg_toggle'])){  echo " ".$_POST['deg_toggle'];}?>" id="deg_table">
             <table class="table table-striped"  > 
             <thead>
                 <th>Name</th>
@@ -313,7 +317,7 @@
                     echo "<tr>
                     <td>".$row['name']."</td>
                     <td>".getDepName($row['dep_id'])[0]."</td>
-                    <td> <form method='post'><button class='btn btn-danger' name='del_deg' value='".$row['id']."'>Delete</button> </form></td>
+                    <td> <form method='post'><button class='btn btn-danger' name='del_deg' value='".$row['id']."'>Delete</button><input style='display:none' type='text' name='deg_toggle' value='in' /> </form></td>
                     <td><button class='btn btn-default' onclick='edit_degree(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#degree_edit_modal'>Edit</button></td>
                     </tr>";
                 }
@@ -332,6 +336,7 @@
                         ?>
                         </select></td>
                     <td><button class='btn btn-success' name="add_deg" type="submit"  style="width:70px" > Add </button></td>
+                    <input style='display:none' type='text' name='deg_toggle' value='in' />
                 </form>
                 </tr>
 
@@ -375,7 +380,7 @@
 			 */-->
      <div class="col-md-12" >
          <h1  data-toggle="collapse" data-target="#sess_table" class="well">Sessions</h1> 
-        <div class="collapse" id="sess_table">
+        <div class="collapse<?php if(isset($_POST['sess_toggle'])){  echo " ".$_POST['sess_toggle'];}?>" id="sess_table">
             <table class="table table-striped"  > 
             <thead>
                 <th>Name</th>
@@ -412,7 +417,7 @@
                     <td>".$row['start']."</td>
                     <td>".$row['end']."</td>
                     <td>".getDegName($row['deg_id'])[0]."</td>
-                    <td><form method='post'><button class='btn btn-danger' name='del_sess' value='".$row['id']."'>Delete</button></form></td>
+                    <td><form method='post'><button class='btn btn-danger' name='del_sess' value='".$row['id']."'>Delete</button><input style='display:none' type='text' name='sess_toggle' value='in' /></form></td>
                     <td><button class='btn btn-default' onclick='edit_sessions(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#sess_edit_modal'>Edit</button></td>
 
                     </tr>";
@@ -434,6 +439,7 @@
                               ?>
                               </select></td>
                           <td><button class='btn btn-success' name="add_sess" type="submit"  style="width:70px" > Add </button></td>
+                       <input style='display:none' type='text' name='sess_toggle' value='in' />
                    </form>
                 </tr>
 
@@ -480,7 +486,7 @@
 			 */-->
      <div class="col-md-5" >
          <h1  data-toggle="collapse" data-target="#staff_table" class="well">Staff</h1> 
-        <div class="collapse" id="staff_table">
+        <div class="collapse<?php if(isset($_POST['staff_toggle'])){  echo " ".$_POST['staff_toggle'];}?>" id="staff_table">
         <table class="table table-striped"  > 
             <thead>
                 <th>Name</th>
@@ -514,7 +520,7 @@
 
                             <td>".$row['name']."</td>
                             <td>".getDepName($row['dep_id'])[0]."</td>
-                            <td><form method='post'><button class='btn btn-danger' name='del_staff' value='".$row['id']."'>Delete</button></form></td>
+                            <td><form method='post'><button class='btn btn-danger' name='del_staff' value='".$row['id']."'>Delete</button><input style='display:none' type='text' name='staff_toggle' value='in' /></form></td>
                             <td><button class='btn btn-default'  name='".$row['id']."'  data-toggle='modal' data-target='#staff_edit_modal'  onclick =\"edit_staff(this.name)\">Edit</button></td>
                        </tr>";
                 }
@@ -533,6 +539,7 @@
                         ?>
                         </select></td>
                     <td><button class='btn btn-success' type="submit" name="add_staff" style="width:70px" > Add </button></td>
+                      <input style='display:none' type='text' name='staff_toggle' value='in' />
                     </form>
                 </tr>
 
@@ -574,7 +581,7 @@
 				//                                                                                         -->
      <div class="col-md-7" >
          <h1  data-toggle="collapse" data-target="#section_table" class="well">Sections</h1> 
-        <div class="collapse" id="section_table">
+        <div class="collapse<?php if(isset($_POST['sec_toggle'])){  echo " ".$_POST['sec_toggle'];}?>" id="section_table">
         <table class="table table-striped"  > 
             <thead>
                 
@@ -614,7 +621,7 @@
                             <td>".getSessName($row['sem_id'])[0]."</td>
                            
                             
-                            <td><form method='post'><button class='btn btn-danger' name='del_section' value='".$row['id']."'>Delete</button></form></td>
+                            <td><form method='post'><button class='btn btn-danger' name='del_section' value='".$row['id']."'>Delete</button> <input style='display:none' type='text' name='sec_toggle' value='in' /></form></td>
                             <td><button class='btn btn-default'  name='".$row['id']."'  data-toggle='modal' data-target='#section_edit_modal'  onclick =\"edit_section(this.name)\">Edit</button></td>
                        </tr>";
                 }
@@ -643,6 +650,7 @@
                         </select></td>
                         <td > <select name="sess_selected" class="form-control" id="sess_for_sec" ></select> </td>
                     <td><button class='btn btn-success' type="submit" name="add_section" style="width:70px" > Add </button></td>
+                       <input style='display:none' type='text' name='sec_toggle' value='in' />
                     </form>
                 </tr>
 
@@ -690,7 +698,7 @@
 		 */ -->
      <div class="col-md-12" >
          <h1  data-toggle="collapse" data-target="#section_sub_table" class="well">Selecting Subjects For Sections</h1> 
-        <div class="collapse" id="section_sub_table">
+        <div class="collapse<?php if(isset($_POST['sec_sub_toggle'])){  echo " ".$_POST['sec_sub_toggle'];}?>" id="section_sub_table">
         <table class="table table-striped"  > 
             <thead>
                 
@@ -777,6 +785,7 @@
                             
                             </select> </td>
                     <td><button class='btn btn-success' type="submit" name="add_section_subject" style="width:70px" > Add </button></td>
+                      <input style='display:none' type='text' name='sec_sub_toggle' value='in' />
                     </form>
                 </tr>
 
