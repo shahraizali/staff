@@ -405,7 +405,13 @@ function delStaff($id){
 
 function updateStaff($id , $name , $dep_id){
     
-
+     $q =  "select * from staff where name = '".mysql_real_escape_string($name)."'  and dep_id = '".mysql_real_escape_string($dep_id)."'; ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+               
+            if($rows < 1){
+ 
     $q =  "update staff set name =  '".mysql_real_escape_string($name)."' ,  dep_id = '".$dep_id."' where id = '".mysql_real_escape_string($id)."' ";
     
                   $check = mysql_query($q);
@@ -413,9 +419,13 @@ function updateStaff($id , $name , $dep_id){
                     success("Degree Updated Successfully");
                 }else{
                     error("Something went wrong!");
-                }
-              
+                }}else{
+                 error("Duplicate entry not allowed");
+            }
+    
 }
+              
+
 
 
 
@@ -544,17 +554,28 @@ function delSubject_sec($id){
 }
 
 function updateSubject_sec( $id , $sub_id , $staff_id){
-   
-       
+           $q =  "select sem_sec_id from sec_subs where id = '".$id."' ";
+                
+                $check = mysql_query($q);
+                $sem_sec_id = mysql_fetch_assoc($check);
+        
+        $q =  "select * from sec_subs where sem_sec_id = '".$sem_sec_id['sem_sec_id']."'  and staff_id = '".$staff_id."'  and sub_id = '".$sub_id."' ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+            if($rows < 1){
               $q =  "update sec_subs set  sub_id = '".$sub_id."' , staff_id = '".$staff_id."' where id = '".mysql_real_escape_string($id)."' ";
-               // echo $q;
+              
                 $check = mysql_query($q);
                
                 if($check){
                     success("Section Updated Successfully");
                 }else{
                     error("Something went wrong!");
-                }
+                }}else{ 
+                 error("Duplicate entry not allowed");
+            }
+    
            
 }
 

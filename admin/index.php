@@ -717,7 +717,7 @@
                           delSubject_sec($_POST["del_sub"]);
                      }
                      if(isset($_POST['update_subs'])){
-                         
+                      
                         updateSubject_sec( $_POST['update_subs'],$_POST["selected_subs"], $_POST["selected_staff"]);
                      }
                       
@@ -742,9 +742,9 @@
                    // echo $q_new;
                             $qr =    mysql_query($q_new);
                                     $rowg = mysql_fetch_assoc($qr);
-                             echo "<td> <span data-toggle='tooltip' title='".strtoupper(getStaffName($rowg['staff_id'])[0])."'>".strtoupper(getSubName($rowg['sub_id'])['code'])." <span>, ";
+                             echo "<td> <span data-toggle='tooltip' title='".strtoupper(getSubName($rowg['sub_id'])['name'])." BY ".strtoupper(getStaffName($rowg['staff_id'])[0])."'>".strtoupper(getSubName($rowg['sub_id'])['code'])." <span>, ";
                             while($rowg = mysql_fetch_assoc($qr)){
-                                 echo  "<span data-toggle='tooltip' title='".strtoupper(getStaffName($rowg['staff_id'])[0])."'>".(getSubName($rowg['sub_id'])['code'])."</span>, ";
+                                 echo  "<span data-toggle='tooltip' title='".strtoupper(getSubName($rowg['sub_id'])['name'])." BY ".strtoupper(getStaffName($rowg['staff_id'])[0])."'>".strtoupper(getSubName($rowg['sub_id'])['code'])."</span>, ";
                             }
                             echo "</td>
                             <td><button class='btn btn-default'  name='".$row2['id']."'  data-toggle='modal' data-target='#section_sub_modal'  onclick =\"edit_section_sub(this.name)\">Edit</button></td>
@@ -754,11 +754,13 @@
                 ?>
                 <tr>
                   <form method="post">
-                  <td><select name="deg_sec_sem_selected" class="form-control" onchange="getSub_dep(this.value)  , getSaff_dep(this.value)">
+                  <td>
+                      <select name="deg_sec_sem_selected" class="form-control" onchange="getSub_dep(this.value)  , getSaff_dep(this.value)">
                             <?php
                                           $q3 =  "select * from sem_sec";
                                 $q2  =  mysql_query($q3);
-                            while( $row2 =  mysql_fetch_array($q2)  ){
+                            echo "<option value='0' >Select Secion</option>";  
+                          while( $row2 =  mysql_fetch_array($q2)  ){
                             echo "<option value='".$row2['id']."' >".strtoupper(getDegName($row2['deg_id'])[0])." ,
                                 ".strtoupper(getSessName($row2['sem_id'])[0])." ,
                                 ".getSectionName($row2['sec_id'])[0]."</option>";
@@ -769,6 +771,7 @@
                             <?php
                              $q =  "select * from all_subs";
                              $r = mysql_query($q);
+                           echo "<option value='0' >Select Subject</option>"; 
                              while( $row = mysql_fetch_assoc($r)){
                                 echo "<option value='".$row['id']."'>".strtoupper($row['code'])." =>  ".strtoupper($row['Name'])."</option>";
                              }

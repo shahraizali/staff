@@ -1,11 +1,4 @@
-<script type="text/javascript" >
 
-   function update_dep(){
-            console.log("lo g updating department");
-            
-    }
-    
-    </script>
 <?php
         include_once('../../connection.php');
         include_once('../../helper.php');
@@ -247,6 +240,7 @@
                 
         
         $id = $_POST['sec_sub_id'];
+        $_POST['sem_sec_id'] = $id;
             ?>
             
                     Degree Session Section:
@@ -262,7 +256,7 @@
                         echo strtoupper(getSectionName($sem_sec_data['sec_id'])[0])."</b>";
                     ?>
                     <br>
-                          <form method="post">
+                        
                     <table class="table table-striped">
                         <thead>
                             <th>Subjects</th>
@@ -270,18 +264,23 @@
                             <th>Update</th>
                             <th>Delete</th>
                         </thead>
-                        <tbody> 
-                          
+                    </table>  
                             <?php
+       
                                 $q  =  "select * from sec_subs where sem_sec_id  =  '".$id."' ; ";
                                 $r  =  mysql_query($q);
+                               
+                                
                                 while($data  =  mysql_fetch_assoc($r)){
-                                    echo "<tr>
+                                 
+                                    echo " <form method='post'><table class='table table-striped'><tbody> 
+                           <tr>
+                                         
                                             <td>
                                                 <select name='selected_subs' class='form-control'>";
                                                          $q  =  "select dep_id from degrees where id  =  '".$sem_sec_data['deg_id']."' ; ";
-                                $r  =  mysql_query($q);
-                               $dep_id  =  mysql_fetch_assoc($r);
+                                $rr  =  mysql_query($q); 
+                               $dep_id  =  mysql_fetch_assoc($rr);
                                             
                                                     $sub_q =  "SELECT * FROM `all_subs` WHERE dep_id =  '".$dep_id['dep_id']."'  ";
                                                     $res = mysql_query($sub_q);
@@ -309,16 +308,16 @@
                                             </td>";   
                                         echo "<td><button class='btn btn-warning' name='update_subs' type='submit' value='".$data['id']."' >Update</button></td>";   
                                         echo "<td><button type='submit' class='btn btn-danger' name='del_sub' value='".$data['id']."'>Delete</button></td>";   
-                                    echo "<tr>";    
+                                    echo "</tr> </tbody></table> <input style='display:none' type='text' name='sec_sub_toggle' value='in' ></form>";    
                                 }
                             
                             ?>
                                                       
-                        </tbody>
-                    </table>
-                              <input style='display:none' type='text' name='sec_sub_toggle' value='in' />
+                       
+                 
+                             
             
-</form>  
+
                             
                            
                         <br>

@@ -21,6 +21,11 @@
         font-weight: bold;
         
     }
+    #img:hover{
+       border: 3px solid grey;
+    
+    }
+
 </style>
 <?php  include_once("header.php");
         include_once("connection.php");
@@ -37,16 +42,19 @@
     $sec_id  = $user['sec_no'];
 ?>
 
-    <div class="container">
+
+
+<div class="container"> 
+         <h1> Profile Information </h1>
+        <div class="row">
+             <div class="col-md-5">
+                    <a href="#"  >
+                        <img id="img" class="img-circle mg-responsive" data-toggle="modal" data-target="#image_edit"   style="width:290px ; height:300px" src="images/logo.jpg">
+                    </a>
+              
+                   </div>
         
-        <div class="row" style="padding-top :20px;">
-             
-            <div class="col-md-3" >
-             
-                    <div id='pic' class="glyphicon glyphicon-user"></div>  
-                    
-            </div> 
-            <div class="col-md-9" >
+            <div class="col-md-7" >
              
                     
                 <span id='text'>Name: </span>  
@@ -69,9 +77,9 @@
                 
                     
             </div> 
+             
         </div>
-        
-        <div class="row" >
+   <div class="row" >
            <div  class="col-md-6" style="padding-top:30px; margin-left: 80px; " >
              
                <h2>Subjects:</h2>
@@ -94,8 +102,37 @@
                <button class='btn btn-default'>Select</button>
             </div> 
         </div>
+        
+        
     </div>
-    
+    <div class="modal fade" id="image_edit" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Change Profile</h4>
+                    </div>
+                      <div class="modal-body" id="image_location">
+                            
+                          <input class="img-responsive" type="image" src="images/logo.jpg" >
+                          <input class="form-control" type="file" src="images/logo.jpg" >
+                          
+                          <input class="btn btn-default" type="submit" name="image_submit">
+                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+        </div>    
+
+
+
+
     
     <!-- Page Content -->
     <script src="js/jquery.js"></script>
