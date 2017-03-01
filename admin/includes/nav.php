@@ -7,7 +7,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Admin Pannel</a>
+                <a class="navbar-brand" href="index.php">Admin Pannel</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -37,14 +37,16 @@
                 <ul class="nav navbar-nav side-nav">
                     <li  <?php if( @$_SESSION['page_name'] ==  "dashboard"){echo "style='background-color:black'" ;} ?>>
                         <a href="index.php"  name="default"  ><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
-                    </li <?php if( @$_SESSION['page_name'] ==  "student"){echo "style='background-color:black'" ;} ?>>
-                    <li>
-                        <a href="#"  onclick="getter(this.name)" name="students" ><i class="fa fa-fw fa-table" ></i>Students</a>
+                    <li  <?php if( @$_SESSION['page_name'] ==  "student"){echo "style='background-color:black'" ;} ?>>
+                        <a href="students.php" name="Form" ><i class="fa fa-fw fa-edit" id="form"   ></i><span >Students</span></a>
                     </li>
                     <li  <?php if( @$_SESSION['page_name'] ==  "form"){echo "style='background-color:black'" ;} ?>>
                         <a href="subjects.php" name="Form" ><i class="fa fa-fw fa-edit" id="form"   ></i><span >Subjects</span></a>
                     </li>
-                   
+
+                   <li  <?php if( @$_SESSION['page_name'] ==  "question"){echo "style='background-color:black'" ;} ?>>
+                        <a href="questions.php" name="Form" ><i class="fa fa-fw fa-edit" id="form"   ></i><span >Questions</span></a>
+                    </li>
                     
                     
                     

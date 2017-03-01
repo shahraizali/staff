@@ -755,7 +755,7 @@
                 <tr>
                   <form method="post">
                   <td>
-                      <select name="deg_sec_sem_selected" class="form-control" onchange="getSub_dep(this.value)  , getSaff_dep(this.value)">
+                      <select name="deg_sec_sem_selected" class="form-control" onchange="getSub_dep(this.value)">
                             <?php
                                           $q3 =  "select * from sem_sec";
                                 $q2  =  mysql_query($q3);

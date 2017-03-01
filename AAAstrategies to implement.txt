@@ -1,0 +1,12 @@
+Streategy for making qustions answers
+
+
+2. table questions 
+		Columns:
+			id , Title , option1 ,option 2, option3 , option4 
+			
+3. table answers
+		Columns:
+			id , std_id ,  sec_sub_id, question_id , answers
+			
+			

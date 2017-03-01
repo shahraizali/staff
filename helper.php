@@ -186,6 +186,9 @@ function getDepartments(){
 
 
 function addDepartment($name){
+        
+    if(!empty($name)){
+
     $created_date = date("Y-m-d H:i:s");
     
      $q =  "select * from departments where name = '".mysql_real_escape_string($name)."'; ";
@@ -205,6 +208,9 @@ function addDepartment($name){
                 }}else{
                  error("Duplicate entry not allowed");
             }
+       }else{
+            warning("Fill in all the fields!!");
+        }
 }
 function delDepartment($id){
     $q =  "delete from departments where id =  '".mysql_real_escape_string($id)."' ; ";
@@ -243,6 +249,8 @@ function updateDepartment($name , $id){
 
 
 function addDegree($deg_name , $dep_id){
+    if(!empty($deg_name) && !empty($dep_id)){
+
     $created_date = date("Y-m-d H:i:s");
  
      $q =  "select * from degrees where name = '".mysql_real_escape_string($deg_name)."' and dep_id='".mysql_real_escape_string($dep_id)."'; ";
@@ -265,6 +273,10 @@ function addDegree($deg_name , $dep_id){
                 }else{
                  error("Duplicate entry not allowed");
             }
+    }else{
+            warning("Fill in all the fields!!");
+        }
+
 }
 
 function delDegree($id){
@@ -302,6 +314,8 @@ function updateDegree($id , $deg_name , $dep_id){
 //                                                                    
 
 function addSession( $sess_name , $start , $end , $deg_id){
+     if(!empty($sess_name) && !empty($start) && !empty($end) && !empty($deg_id)){
+
          $created_date = date("Y-m-d H:i:s");
          $q =  "select * from sessions where name = '".mysql_real_escape_string($sess_name)."'  and start = '".mysql_real_escape_string($start)."' and end ='".mysql_real_escape_string($end)."' and deg_id ='".mysql_real_escape_string($deg_id)."'; ";
                 
@@ -323,7 +337,9 @@ function addSession( $sess_name , $start , $end , $deg_id){
             }else{
                  error("Duplicate entry not allowed");
             }
-    
+    }else{
+            warning("Fill in all the fields!!");
+        }
 }   
 
 
@@ -367,6 +383,7 @@ function updateSession($id , $sess_name , $start , $end , $deg_id){
 
 function addStaff( $name , $dep_id){
         
+         if(!empty($name) && !empty($dep_id)){
             $created_date = date("Y-m-d H:i:s");
             $q =  "select * from staff where name = '".mysql_real_escape_string($name)."'  and dep_id = '".mysql_real_escape_string($dep_id)."'; ";
                 
@@ -388,6 +405,9 @@ function addStaff( $name , $dep_id){
             }else{
                  error("Duplicate entry not allowed");
             }
+        }else{
+            warning("Fill in all the fields!!");
+        }
     
 }
 
@@ -441,7 +461,7 @@ function updateStaff($id , $name , $dep_id){
 //                                             
 
 function addSection( $sec_id  , $deg_id , $sess_id){
-        
+        if(!empty($sec_id) && !empty($deg_id) && !empty($sess_id) ){
             $created_date = date("Y-m-d H:i:s");
  
               $q =  "select * from sem_sec where sem_id = '".$sess_id."'  and sec_id = '$sec_id'  and deg_id = '$deg_id'";
@@ -462,7 +482,9 @@ function addSection( $sec_id  , $deg_id , $sess_id){
             }else{
                  error("Duplicate entry not allowed");
             }
-    
+        }else{
+            warning("Fill in all the fields!!");
+        }
 }
 
 
@@ -514,7 +536,7 @@ function updateSection( $id ,$sec_id  , $deg_id , $sess_id){
 
 
 function addSectionSubject( $sem_sec_id  , $sub_id , $staff_id){
-        
+        if(!empty($sem_sec_id) && !empty($sub_id) && !empty($staff_id)  ){
             $created_date = date("Y-m-d H:i:s");
  
               $q =  "select * from sec_subs where sem_sec_id = '".$sem_sec_id."'  and sub_id = '$sub_id'";
@@ -535,7 +557,9 @@ function addSectionSubject( $sem_sec_id  , $sub_id , $staff_id){
             }else{
                  error("Duplicate entry not allowed");
             }
-    
+        }else{
+            warning("Fill in all the fields!!");
+        }
 }
 
 
@@ -609,6 +633,7 @@ function getSubjects(){
 
 function addSubject( $code  , $name , $dep_id){
         
+        if(!empty($code) && !empty($name) && !empty($dep_id)){
             $created_date = date("Y-m-d H:i:s");
  
               $q =  "select * from all_subs where code = '".$code."'  and Name = '".mysql_real_escape_string($name)."' and dep_id='".$dep_id."'; ";
@@ -630,8 +655,9 @@ function addSubject( $code  , $name , $dep_id){
             }else{
                  error("Duplicate entry not allowed");
             }
-    
-    
+         }else{
+            warning("Fill in all the fields!");
+         }
     
 }
 
@@ -661,5 +687,97 @@ function updateSubject( $id , $code  , $name , $dep_id){
                 }
            
 }
+
+
+
+
+// questions related functions 
+
+
+
+function getQuestions(){
+         $q =  "select * from Questions";
+                $r = mysql_query($q);
+                $d = "";
+                while( $row = mysql_fetch_assoc($r)){
+                   $d .=  "<tr>
+                    <td>".$row['Title']."</td>
+                    <td>".$row['opt1']."</td>
+                    <td>".$row['opt2']."</td>
+                    <td>".$row['opt3']."</td>
+                    <td>".$row['opt4']."</td>
+                    <td><form method='post'> <button class='btn btn-danger' name='del_question' value ='".$row['id']."'>Delete</button> </form></td>
+                        <td><button class='btn btn-default' onclick='edit_question(this.name)' name='".$row['id']."' data-toggle='modal' data-target='#question_edit_modal'>Edit</button></td>
+                    </tr>";
+                }
+                return $d;
+}
+
+function addQuestion($title , $opt1 , $opt2 , $opt3 , $opt4){
+        if(!empty($title) && !empty($opt1)&& !empty($opt2)&& !empty($opt3)&& !empty($opt4) ){        
+             $created_date = date("Y-m-d H:i:s");
+ 
+              $q =  "select * from Questions where Title = '".mysql_real_escape_string($title)."'  and opt1 = '".mysql_real_escape_string($opt1)."'and opt2 = '".mysql_real_escape_string($opt2)."'and opt3 = '".mysql_real_escape_string($opt3)."'and opt4 = '".mysql_real_escape_string($opt4)."' ; ";
+                
+                $check = mysql_query($q);
+                $rows = mysql_num_rows($check);
+               
+            if($rows < 1){
+              $q =  "insert into Questions( id , Title ,opt1 , opt2 , opt3 , opt4, created  ) values ('' , '".mysql_real_escape_string($title)."'  , '".mysql_real_escape_string($opt1)."' , '".mysql_real_escape_string($opt2)."' , '".mysql_real_escape_string($opt3)."' , '".mysql_real_escape_string($opt4)."' , '".$created_date."' ) ; ";
+                
+                $check = mysql_query($q);
+                if($check ){
+                
+                    success("New Question  has been added");
+                }else{
+                  
+                    error("Something went wrong");
+                }
+            }else{
+                 error("Duplicate entries not allowed!!");
+            }
+    }else{
+             warning("Fill in all the fields!");
+    }
+    
+}
+
+
+
+function delQuestion($id){
+    $q =  "delete from Questions where id =  '".mysql_real_escape_string($id)."' ; ";
+               // echo $q;
+                $check = mysql_query($q);
+                if($check ){
+                    success("Deleted");
+                }else{
+                    error("Something went wrong");
+                }
+}
+
+
+
+
+function updateQuestion( $id , $title , $opt1 , $opt2 , $opt3 , $opt4){
+            if(!empty($title) && !empty($opt1)&& !empty($opt2)&& !empty($opt3)&& !empty($opt4) ){  
+       
+              $q =  "update Questions set  Title = '".mysql_real_escape_string($title)."' , opt1 = '".mysql_real_escape_string($opt1)."' ,opt2 = '".mysql_real_escape_string($opt2)."' , opt3 = '".mysql_real_escape_string($opt3)."' ,opt4 = '".mysql_real_escape_string($opt4)."' where id = '".mysql_real_escape_string($id)."' ";
+               
+                $check = mysql_query($q);
+               
+                if($check){
+                    success("Subject Updated Successfully");
+                }else{
+                    error("Something went wrong!");
+                }
+
+            }else{
+                warning("Fill in all the fields!");
+            }
+           
+}
+
+
+
 
 ?>

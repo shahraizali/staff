@@ -273,9 +273,6 @@ $name_error =  false;
                                 if(isset($_POST['section'])){
                                     @$_SESSION['sec'] =  $_POST['sec'];
                                     
-                                    
-                                    
-
                                     if( isset($_SESSION['name']) && isset($_SESSION['email']) && isset($_SESSION['dep']) && isset($_SESSION['deg']) && isset($_SESSION['sessions']) && isset($_SESSION['sec'])){
                                             
 
@@ -299,9 +296,14 @@ $name_error =  false;
                                                
                                                 success("Record entered");
 
-                                               
+                                                $qq =  "select std_id  from students where email = '".$email."' and hash = '".$hash."'  ";
+                                                $res = mysql_query($qq);
+                                                $data = mysql_fetch_array($res);
+                                                $get_id = $data['std_id'];
                                                 // mail to be implemented here 
-
+                                                $urll = "/confirmation.php?hash=".$hash."&user=".$get_id."";
+                                                
+                                            
                                                 //end mail
                                                 //unset($_SESSION['email']); except mail as mail is to be used in next page
                                                 unset($_SESSION['name']);

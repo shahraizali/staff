@@ -1,8 +1,8 @@
- <?php
-            include_once("../helper.php");
-            include_once("../connection.php");
+<?php include_once("includes/header.php");
+    if (isset($_SESSION['page_name']))
+            $_SESSION['page_name'] =  '';
+ $_SESSION['page_name'] =  "student";
 ?>
-
     
     
     <script type="text/javascript">
@@ -93,12 +93,24 @@
             }
 </script>
 
+<body>
+   <div id="wrapper">
 
-<h1 class="page-header">
-    Students Info
-    <small></small>
-</h1>
+        <!-- Navigation -->
+            <?php  include_once("includes/nav.php"); ?>
 
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12" id="right_place">
+                        <h1 class="page-header">
+                            Students Page
+                            <small>Subheading</small>
+                        </h1>
+    
 <ul class="breadcrumb">
     <li>
        Filters
@@ -170,5 +182,17 @@
             
         </tbody>
 </table>
+     </div>
+        </div>
+       </div>
 
+       </div>
 
+   <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

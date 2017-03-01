@@ -295,7 +295,7 @@
                                              </td>
                                                 <td>
                                                  <select name='selected_staff' class='form-control'>";
-                                                    $sub_q =  "SELECT * FROM staff where dep_id = '".$dep_id['dep_id']."'";
+                                                    $sub_q =  "SELECT * FROM staff ";
                                                     $res = mysql_query($sub_q);
                                                     while($d =  mysql_fetch_assoc($res)){
                                                         $sel = "";
@@ -465,5 +465,39 @@
             <?php
         }
         
+
+        if(isset($_POST['question_edit'])) {    
+            $id = $_POST['question_id'];
+            $q = "select * from Questions where id =  '".$id."' ; ";
+        
+             $r =  mysql_query($q);
+             $data =  mysql_fetch_assoc($r);
+
+            ?>
+                <form method="post">
+                    Title:
+                    <input type="text" class="form-control" value="<?php echo $data['Title'] ?>" name="Title" placeholder="Question Title"/>
+                    <br>
+                    Option 1:
+                    <input type="text" class="form-control" value="<?php echo $data['opt1'] ?>" name="opt1" placeholder="Option 1"/>
+                    <br>
+                    Option 2:
+                    <input type="text" class="form-control" value="<?php echo $data['opt2'] ?>" name="opt2" placeholder="Option 2"/>
+                    <br>
+                    Option 3:
+                    <input type="text" class="form-control" value="<?php echo $data['opt3'] ?>" name="opt3" placeholder="Option 3"/>
+                    <br>
+                    Option 4:
+                    <input type="text" class="form-control" value="<?php echo $data['opt4'] ?>" name="opt4" placeholder="Option 4"/>
+                    <br>
+                    
+                    <button class='btn btn-success' name="update_question" value="<?=  $id?>" type="submit"  style="width:70px" > Update </button>
+                    </form>
+
+
+            <?php
+        }
+
+
 
 ?>
